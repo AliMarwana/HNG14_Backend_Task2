@@ -1,4 +1,6 @@
 
+using HNG14_Backend_Task1.Data;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
 namespace HNG14_Backend_Task1
@@ -10,6 +12,8 @@ namespace HNG14_Backend_Task1
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("SupabaseDb")));
 
             builder.Services.AddControllers()
                     .AddJsonOptions(options =>

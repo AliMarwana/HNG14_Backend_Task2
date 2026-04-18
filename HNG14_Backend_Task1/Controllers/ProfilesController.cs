@@ -190,7 +190,8 @@ namespace HNG14_Backend_Task1.Controllers
                         Message = "Profile already exists",
                         Data = JsonSerializer.Serialize(profileCorresponding)
                     };
-                    return CreatedAtAction("AddProfile", new { id = profileCorresponding.Id }, successResponse);
+                    return Ok(successResponse);
+                    //return CreatedAtAction("AddProfile", new { id = profileCorresponding.Id }, successResponse);
                 }
             }
         }

@@ -101,6 +101,7 @@ namespace HNG14_Backend_Task1.Controllers
         public async Task<IActionResult> AddProfile([FromBody] NameRequest nameRequest)
         {
             string name = nameRequest.Name;
+            name = name.ToLower();
             if (String.IsNullOrEmpty(name))
             {
                 return BadRequest(new ErrorDto { Status = "error", Message = "Missing or empty name parameter" });

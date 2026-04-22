@@ -4,10 +4,16 @@ namespace HNG14_Backend_Task1.DTOs
 {
     public class ResponseDto
     {
-        [JsonIgnore]
-        public int Code { get; set; }
         [JsonPropertyName("status")]
         public string Status { get; set; }
+        [JsonPropertyName("page")]
+        public int Page { get; set; }
+        [JsonPropertyName("limit")]
+        public int Limit { get; set; }
+        [JsonPropertyName("total")]
+        public int Total { get; set; }
+
+
         [JsonPropertyName("message")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? Message { get; set; } = null;

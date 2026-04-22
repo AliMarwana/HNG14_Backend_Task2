@@ -132,7 +132,6 @@ namespace HNG14_Backend_Task1.Controllers
                         
                         profile.Gender = (string)ReflectionUtils.GetPropertyValue(genderResponse.Data, "Gender");
                         profile.GenderProbability = (float)ReflectionUtils.GetPropertyValue(genderResponse.Data, "Probability");
-                        profile.SampleSize = (int)ReflectionUtils.GetPropertyValue(genderResponse.Data, "Count");
                         var ageResponse = await AgeRequest(name);
                         if (ageResponse.Code == 200)
                         {
@@ -253,7 +252,6 @@ namespace HNG14_Backend_Task1.Controllers
                 profilesFiltered = profilesFiltered.Select(p =>
                 {
                     p.GenderProbability = null;
-                    p.SampleSize = null;
                     p.CountryProbability = null;
                     p.CreatedAt = null;
                     return p;

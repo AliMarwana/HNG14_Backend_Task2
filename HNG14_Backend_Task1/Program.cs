@@ -1,5 +1,6 @@
 
 using HNG14_Backend_Task1.Data;
+using HNG14_Backend_Task2.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -7,14 +8,21 @@ namespace HNG14_Backend_Task1
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-            builder.WebHost.UseUrls($"http://*:{port}");
+            //var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+            //builder.WebHost.UseUrls($"http://*:{port}");
             // Add services to the container.
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("SupabaseDb")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+    .UseSeeding((context, _) =>
+    {
+        
+        // Votre logique de seeding ici
+        //SeedUtils.SeedData(context);
+    }));
+                ;
 
             builder.Services.AddControllers()
                     .AddJsonOptions(options =>
@@ -50,7 +58,16 @@ namespace HNG14_Backend_Task1
             app.UseCors("AllowAll");   // <-- Apply the CORS policy
 
             app.MapControllers();
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
+                // Cette commande déclenche UseAsyncSeeding (ou UseSeeding)
+                await context.Database.MigrateAsync();
+
+                // OU si vous n'utilisez pas les migrations (ex: tests/démo) :
+                // await context.Database.EnsureCreatedAsync();
+            }
             app.Run();
         }
     }

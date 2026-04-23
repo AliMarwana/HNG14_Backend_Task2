@@ -11,10 +11,14 @@ namespace HNG14_Backend_Task1.Data
     public class ApplicationDbContext : DbContext
     {
         private IConfiguration _configuration;
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
+        private readonly IWebHostEnvironment _env;
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, 
+            IWebHostEnvironment env,
+            IConfiguration configuration)
             : base(options) 
         {
             _configuration = configuration;
+            _env = env;
 
         }
 
@@ -65,7 +69,8 @@ namespace HNG14_Backend_Task1.Data
         }
         private List<Profile> GetProfilesForSeed()
         {
-            var baseDirectory = GetSourceDirectory();
+            //var baseDirectory = GetSourceDirectory();
+            var baseDirectory =  _env.ContentRootPath;
             //baseDirectory = Path.GetDirectoryName(baseDirectory);
             var seedProfilesPath = Path.Combine(baseDirectory, "seed_profiles.json");
             var jsonString = string.Empty;

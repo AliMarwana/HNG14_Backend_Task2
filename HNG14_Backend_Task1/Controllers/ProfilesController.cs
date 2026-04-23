@@ -67,6 +67,7 @@ namespace HNG14_Backend_Task1.Controllers
             var profilesFiltered = allProfiles.Where(p => FilterCondition(p, profilesParamsDto)).OrderBy(p => p.Age);
             var profilesSorted = profilesFiltered;   
             var profilesForPage = new List<Profile>();
+            profilesParamsDto.SortBy = profilesParamsDto.SortBy?.ToLower();
             if (profilesParamsDto.SortBy != null)
             {
                 if (profilesParamsDto.SortBy != "age"
@@ -126,7 +127,7 @@ namespace HNG14_Backend_Task1.Controllers
                             Status = "success",
                             Page = profilesParamsDto.Page,
                             Limit = profilesParamsDto.Limit,
-                            Total = allProfiles.Count(),
+                            Total = profilesSorted.Count(),
                             Data = profilesForPage
                         };
                         var responseJson = JsonSerializer.Serialize(responseDto);

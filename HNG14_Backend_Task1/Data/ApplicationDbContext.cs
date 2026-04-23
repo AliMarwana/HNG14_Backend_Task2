@@ -1,6 +1,7 @@
 ﻿using HNG14_Backend_Task1.Models;
 using Microsoft.EntityFrameworkCore;
 using Supabase.Gotrue;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -23,10 +24,38 @@ namespace HNG14_Backend_Task1.Data
                 .HasIndex(u => u.Name)
                 .IsUnique();
         }
+        private static string FindProjectFile(string startPath)
+        {
+            DirectoryInfo current = new DirectoryInfo(startPath);
+
+            // Walk up the directory tree (max 10 levels to prevent infinite loop)
+            for (int i = 0; i < 10; i++)
+            {
+                if (current == null) break;
+
+                // Look for any .csproj file in the current directory
+                var projectFiles = current.GetFiles("*.csproj");
+                if (projectFiles.Any())
+                {
+                    foreach (var projectFile in projectFiles)
+                    {
+                            return projectFile.FullName;
+                    }
+
+                }
+
+                // Move up one directory
+                current = current.Parent;
+            }
+
+            return null;
+        }
         private static string GetSourceDirectory([CallerFilePath] string sourceFilePath = "")
         {
+            string assemblyPath = Assembly.GetExecutingAssembly().Location;
+            var baseDirectory = FindProjectFile(Path.GetDirectoryName(assemblyPath));
             // Path.GetDirectoryName removes the filename, returns just the folder path
-            return Path.GetDirectoryName(sourceFilePath);
+            return baseDirectory;
 
         }
         private List<Profile> GetProfilesForSeed()

@@ -99,7 +99,7 @@ namespace HNG14_Backend_Task1.Data
             //    p.CreatedAt = DateTime.UtcNow;
             //    return p;
             //}
-          ).ToList();
+          //).ToList();
             return profilesData;
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

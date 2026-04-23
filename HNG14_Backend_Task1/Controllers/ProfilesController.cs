@@ -107,7 +107,7 @@ namespace HNG14_Backend_Task1.Controllers
                 else
                 {
                     var profilesNumber = profilesSorted.Count();
-                    var firstIndex = (profilesParamsDto.Pagination - 1) * profilesParamsDto.Limit;
+                    var firstIndex = (profilesParamsDto.Page - 1) * profilesParamsDto.Limit;
                     var lastIndex = firstIndex + profilesParamsDto.Limit - 1;
                     for (int i = firstIndex; i <= lastIndex; i++)
                     {
@@ -124,7 +124,7 @@ namespace HNG14_Backend_Task1.Controllers
                         var responseDto = new ResponseDto
                         {
                             Status = "success",
-                            Page = profilesParamsDto.Pagination,
+                            Page = profilesParamsDto.Page,
                             Limit = profilesParamsDto.Limit,
                             Total = allProfiles.Count(),
                             Data = profilesForPage

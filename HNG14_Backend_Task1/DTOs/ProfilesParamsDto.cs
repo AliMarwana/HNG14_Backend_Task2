@@ -23,8 +23,8 @@ namespace HNG14_Backend_Task2.DTOs
         public string? SortBy { get; set; } = null;
         [FromQuery(Name = "order")]
         public string? Order { get; set; } = null;
-        [FromQuery(Name = "pagination")]
-        public int Pagination { get; set; } = 1; // Valeur par défaut
+        [FromQuery(Name = "page")]
+        public int Page { get; set; } = 1; // Valeur par défaut
         [FromQuery(Name = "limit")]
         public int Limit { get; set; } = 10;
     }

@@ -23,14 +23,25 @@ namespace HNG14_Backend_Task1.Controllers
             _context = context;
         }
 
+       
 
-
-
-        //[HttpGet("search")]
-        //public async Task<IActionResult> GetSearch([FromQuery] string? q = null )
-        //{
-
-        //}
+        private bool FilterCondition(Profile profile, ProfilesParamsDto profilesParamsDto)
+        {
+            var filterCondition = true;
+            if(profilesParamsDto.Gender != null)
+                filterCondition = filterCondition && profile.Gender == profilesParamsDto.Gender;
+            if(profilesParamsDto.CountryId != null)
+                filterCondition = filterCondition && profile.CountryId == profilesParamsDto.CountryId;
+            if(profilesParamsDto.MinAge != null)
+                filterCondition = filterCondition && profile.Age >= profilesParamsDto.MinAge;
+            if(profilesParamsDto.MaxAge != null)
+                filterCondition = filterCondition && profile.Age <= profilesParamsDto.MaxAge;
+            if(profilesParamsDto.MinGenderProbability != null)
+                filterCondition = filterCondition && profile.GenderProbability >= profilesParamsDto.MinGenderProbability;
+            if(profilesParamsDto.MinCountryProbability != null)
+                filterCondition = filterCondition && profile.CountryProbability >= profilesParamsDto.MinCountryProbability;
+            return filterCondition;
+        }
         private object? SortingFunction(Profile profile, ProfilesParamsDto profilesParamsDto)
         {
             if(profilesParamsDto.SortBy != null)

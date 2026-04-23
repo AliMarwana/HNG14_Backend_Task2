@@ -13,7 +13,7 @@ namespace HNG14_Backend_Task1
             var builder = WebApplication.CreateBuilder(args);
             var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
             builder.WebHost.UseUrls($"http://*:{port}");
-            // Add services to the container.
+            //// Add services to the container.
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
    );

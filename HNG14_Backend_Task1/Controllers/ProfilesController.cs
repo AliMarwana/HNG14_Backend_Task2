@@ -23,44 +23,14 @@ namespace HNG14_Backend_Task1.Controllers
             _context = context;
         }
 
-       
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetProfile(Guid id)
-        {
-            var profileCorresponding = await _context.Profiles.FirstOrDefaultAsync(p  => p.Id == id);
-            if(profileCorresponding == null)
-            {
-                return NotFound(new ErrorDto { Status = "Not found", Message = "Profile not found" });
-            }
-            else
-            {
-                var successResponse = new ResponseDto
-                {
-                    Status = "success",
-                    Data = profileCorresponding
-                };
-                var successResponseJson = JsonSerializer.Serialize(successResponse);
-                return Ok(successResponseJson);
-            }
-        }
 
-        private bool FilterCondition(Profile profile, ProfilesParamsDto profilesParamsDto)
-        {
-            var filterCondition = true;
-            if(profilesParamsDto.Gender != null)
-                filterCondition = filterCondition && profile.Gender == profilesParamsDto.Gender;
-            if(profilesParamsDto.CountryId != null)
-                filterCondition = filterCondition && profile.CountryId == profilesParamsDto.CountryId;
-            if(profilesParamsDto.MinAge != null)
-                filterCondition = filterCondition && profile.Age >= profilesParamsDto.MinAge;
-            if(profilesParamsDto.MaxAge != null)
-                filterCondition = filterCondition && profile.Age <= profilesParamsDto.MaxAge;
-            if(profilesParamsDto.MinGenderProbability != null)
-                filterCondition = filterCondition && profile.GenderProbability >= profilesParamsDto.MinGenderProbability;
-            if(profilesParamsDto.MinCountryProbability != null)
-                filterCondition = filterCondition && profile.CountryProbability >= profilesParamsDto.MinCountryProbability;
-            return filterCondition;
-        }
+
+
+        //[HttpGet("search")]
+        //public async Task<IActionResult> GetSearch([FromQuery] string? q = null )
+        //{
+
+        //}
         private object? SortingFunction(Profile profile, ProfilesParamsDto profilesParamsDto)
         {
             if(profilesParamsDto.SortBy != null)
@@ -145,20 +115,5 @@ namespace HNG14_Backend_Task1.Controllers
         }
 
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProfile(Guid id)
-        {
-            var profileCorresponding = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == id);
-            if (profileCorresponding == null)
-            {
-                return NotFound(new ErrorDto { Status = "Not found", Message = "Profile not found" });
-            }
-            else
-            {
-                _context.Profiles.Remove(profileCorresponding);
-                await _context.SaveChangesAsync();
-                return NoContent();
-            }
-        }
     }
 }

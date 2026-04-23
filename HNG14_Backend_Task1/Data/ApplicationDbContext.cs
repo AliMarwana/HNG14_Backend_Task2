@@ -24,28 +24,33 @@ namespace HNG14_Backend_Task1.Data
                 .HasIndex(u => u.Name)
                 .IsUnique();
         }
-        private static string FindProjectFile(string startPath)
+        private static string FindProjectFilePath(string startPath)
         {
             DirectoryInfo current = new DirectoryInfo(startPath);
 
             // Walk up the directory tree (max 10 levels to prevent infinite loop)
+   
             for (int i = 0; i < 10; i++)
             {
-                if (current == null) break;
+                //if (current == null) break;
 
-                // Look for any .csproj file in the current directory
-                var projectFiles = current.GetFiles("*.csproj");
-                if (projectFiles.Any())
-                {
-                    foreach (var projectFile in projectFiles)
-                    {
-                            return projectFile.FullName;
-                    }
+                //// Look for any .csproj file in the current directory
+                //var jsonFiles = current.GetFiles("*.json");
+                //if (jsonFiles.Any())
+                //{
+                //    foreach (var jsonFile in jsonFiles)
+                //    {
+                //            if(jsonFile.FullName.EndsWith("seed_profiles.json"))
+                //            return Path.GetDirectoryName(jsonFile.FullName);
+                //    }
 
-                }
+                //}
 
                 // Move up one directory
-                current = current.Parent;
+                if (!current.FullName.EndsWith("HNG14_Backend_Task1"))
+                    current = current.Parent;
+                else
+                    return current.FullName;
             }
 
             return null;
@@ -53,7 +58,7 @@ namespace HNG14_Backend_Task1.Data
         private static string GetSourceDirectory([CallerFilePath] string sourceFilePath = "")
         {
             string assemblyPath = Assembly.GetExecutingAssembly().Location;
-            var baseDirectory = FindProjectFile(Path.GetDirectoryName(assemblyPath));
+            var baseDirectory = FindProjectFilePath(Path.GetDirectoryName(assemblyPath));
             // Path.GetDirectoryName removes the filename, returns just the folder path
             return baseDirectory;
 
@@ -61,7 +66,7 @@ namespace HNG14_Backend_Task1.Data
         private List<Profile> GetProfilesForSeed()
         {
             var baseDirectory = GetSourceDirectory();
-            baseDirectory = Path.GetDirectoryName(baseDirectory);
+            //baseDirectory = Path.GetDirectoryName(baseDirectory);
             var seedProfilesPath = Path.Combine(baseDirectory, "seed_profiles.json");
             var jsonString = string.Empty;
             var jsonProfilesString = string.Empty;

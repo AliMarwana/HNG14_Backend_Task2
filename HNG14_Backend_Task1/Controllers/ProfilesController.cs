@@ -63,15 +63,30 @@ namespace HNG14_Backend_Task1.Controllers
         public async Task<IActionResult> GetProfilesFilteredSorted(ProfilesParamsDto profilesParamsDto)
         {
             var allProfiles = await _context.Profiles.ToListAsync();
+            
             var profilesFiltered = allProfiles.Where(p => FilterCondition(p, profilesParamsDto)).OrderBy(p => p.Age);
             var profilesSorted = profilesFiltered;   
             var profilesForPage = new List<Profile>();
-            if(profilesParamsDto.SortBy != null)
+            if (profilesParamsDto.SortBy != null)
             {
-                if(profilesParamsDto.Order == null || profilesParamsDto.Order == "asc")
-                profilesSorted = profilesFiltered.OrderBy(p => SortingFunction(p, profilesParamsDto));
+                if (profilesParamsDto.SortBy != "age"
+                && profilesParamsDto.SortBy != "create_at" && profilesParamsDto.SortBy != "gender_probability")
+                {
+                    return UnprocessableEntity(new ErrorDto
+                    {
+                        Status = "error",
+                        Message = "Can not process such sorting",
+
+
+                    });
+                }
                 else
-                profilesSorted = profilesFiltered.OrderByDescending(p => SortingFunction(p, profilesParamsDto));
+                {
+                    if (profilesParamsDto.Order == null || profilesParamsDto.Order == "asc")
+                        profilesSorted = profilesFiltered.OrderBy(p => SortingFunction(p, profilesParamsDto));
+                    else
+                        profilesSorted = profilesFiltered.OrderByDescending(p => SortingFunction(p, profilesParamsDto));
+                }
             }
             if(profilesParamsDto.Limit > 50)
             {

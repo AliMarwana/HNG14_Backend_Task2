@@ -101,6 +101,11 @@ namespace HNG14_Backend_Task1.Data
                 ReferenceHandler = ReferenceHandler.Preserve,
             };
             var profilesData = JsonSerializer.Deserialize<List<Profile>>(jsonProfilesString, settings);
+            profilesData = profilesData.Select(p => {
+                p.CreatedAt = DateTime.UtcNow;
+                return p;
+            }
+          ).ToList();
             return profilesData;
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

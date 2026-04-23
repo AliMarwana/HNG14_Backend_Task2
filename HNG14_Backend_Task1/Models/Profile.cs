@@ -38,9 +38,8 @@ namespace HNG14_Backend_Task1.Models
         [JsonPropertyName("country_probability")]
         [Column("country_probability")]
         public double? CountryProbability { get; set; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonPropertyName("created_at")]
         [Column("created_at")]
-        public DateTime? CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; } = DateTime.Now;
     }
 }

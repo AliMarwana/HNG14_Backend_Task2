@@ -40,6 +40,6 @@ namespace HNG14_Backend_Task1.Models
         public double? CountryProbability { get; set; }
         [JsonPropertyName("created_at")]
         [Column("created_at")]
-        public DateTime? CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
 }

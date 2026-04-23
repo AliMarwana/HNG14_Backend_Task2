@@ -115,12 +115,12 @@ namespace HNG14_Backend_Task1.Controllers
                         if (profileIndexed != null)
                             profilesForPage.Add(profileIndexed);
                     }
-                    if(profilesForPage == null ||  profilesForPage.Count() == 0)
-                    {
-                        return NotFound(new ErrorDto { Status = "Not found", Message = "Profile not found" });
-                    }
-                    else
-                    {
+                    //if(profilesForPage == null ||  profilesForPage.Count() == 0)
+                    //{
+                    //    return NotFound(new ErrorDto { Status = "Not found", Message = "Profile not found" });
+                    //}
+                    //else
+                    //{
                         var responseDto = new ResponseDto
                         {
                             Status = "success",
@@ -131,7 +131,7 @@ namespace HNG14_Backend_Task1.Controllers
                         };
                         var responseJson = JsonSerializer.Serialize(responseDto);
                         return Ok(responseJson);
-                    }
+                    //}
                 }
                    
 

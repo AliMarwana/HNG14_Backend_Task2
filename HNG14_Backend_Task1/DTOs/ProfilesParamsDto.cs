@@ -15,9 +15,9 @@ namespace HNG14_Backend_Task2.DTOs
         [FromQuery(Name = "max_age")]
         public int? MaxAge { get; set; } = null;
         [FromQuery(Name = "min_gender_probability")]
-        public int? MinGenderProbability { get; set; } = null;
+        public float? MinGenderProbability { get; set; } = null;
         [FromQuery(Name = "min_country_probability")]
-        public int? MinCountryProbability { get; set; } = null;
+        public float? MinCountryProbability { get; set; } = null;
 
         [FromQuery(Name = "sort_by")]
         public string? SortBy { get; set; } = null;

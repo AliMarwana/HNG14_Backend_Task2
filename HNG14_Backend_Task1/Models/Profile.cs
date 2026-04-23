@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 
@@ -11,7 +12,7 @@ namespace HNG14_Backend_Task1.Models
         [Column("id")] 
         public Guid Id { get; set; }
         [JsonPropertyName("name")]
-        [Column("name")]
+        [Column("name", TypeName = "varchar")]
         public string? Name { get; set; }
         [JsonPropertyName("gender")]
         [Column("gender")]
@@ -28,10 +29,11 @@ namespace HNG14_Backend_Task1.Models
         [Column("age_group")]
         public string? AgeGroup { get; set; }
         [JsonPropertyName("country_id")]
-        [Column("country_id")]
+        [Column("country_id", TypeName = "varchar")]
+        [MaxLength(2)]
         public string? CountryId { get; set; }
         [JsonPropertyName("country_name")]
-        [Column("country_name")]
+        [Column("country_name", TypeName = "varchar")]
         public string? CountryName { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

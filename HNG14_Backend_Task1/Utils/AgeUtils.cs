@@ -11,7 +11,7 @@
                 return "Teenager";
             else if (age >= 20 && age <= 59)
                 return "Adult";
-            else if (age > 55)
+            else if (age > 60)
                 return "Senior";
             else
                 return "Unknown";

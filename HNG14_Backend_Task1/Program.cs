@@ -2,6 +2,7 @@
 using HNG14_Backend_Task1.Data;
 using HNG14_Backend_Task2.Utils;
 using Microsoft.AspNetCore.HttpLogging;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -26,6 +27,8 @@ namespace HNG14_Backend_Task1
                                        HttpLoggingFields.RequestPath |
                                        HttpLoggingFields.ResponseStatusCode;
             });
+            
+            
             builder.Services.AddControllers()
                     .AddJsonOptions(options =>
                     {
@@ -53,8 +56,18 @@ namespace HNG14_Backend_Task1
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            var options = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            };
+            options.KnownNetworks.Clear();
+            options.KnownProxies.Clear();
+            app.UseForwardedHeaders(options);
 
-            app.UseHttpsRedirection();
+            // 3. ACTIVATION DES LOGS HTTP (À placer ici pour tout capturer)
+            app.UseHttpLogging();
+            app.UseForwardedHeaders(options);
+            //app.UseHttpsRedirection();
 
             app.UseAuthorization();
             app.UseCors("AllowAll");   // <-- Apply the CORS policy

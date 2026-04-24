@@ -25,6 +25,7 @@ namespace HNG14_Backend_Task1
                 // Choisissez les champs à afficher (RequestPath contient l'URL)
                 logging.LoggingFields = HttpLoggingFields.RequestMethod |
                                        HttpLoggingFields.RequestPath |
+                                       HttpLoggingFields.RequestQuery |
                                        HttpLoggingFields.ResponseStatusCode;
                 logging.RequestBodyLogLimit = 4096;
                 logging.ResponseBodyLogLimit = 4096;

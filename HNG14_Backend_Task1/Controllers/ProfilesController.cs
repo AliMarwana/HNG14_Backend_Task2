@@ -36,12 +36,14 @@ namespace HNG14_Backend_Task1.Controllers
             var filterCondition = true;
             if (profilesParamsDto.Gender != null)
                 filterCondition = filterCondition && profile.Gender == profilesParamsDto.Gender;
+            if (profilesParamsDto.AgeGroup != null)
+                filterCondition = filterCondition && profile.AgeGroup == profilesParamsDto.AgeGroup;
             if (profilesParamsDto.CountryId != null)
                 filterCondition = filterCondition && profile.CountryId == profilesParamsDto.CountryId;
             if (profilesParamsDto.MinAge != null)
-                filterCondition = filterCondition && profile.Age > profilesParamsDto.MinAge;
+                filterCondition = filterCondition && profile.Age >= profilesParamsDto.MinAge;
             if (profilesParamsDto.MaxAge != null)
-                filterCondition = filterCondition && profile.Age < profilesParamsDto.MaxAge;
+                filterCondition = filterCondition && profile.Age <= profilesParamsDto.MaxAge;
             if (profilesParamsDto.MinGenderProbability != null)
                 filterCondition = filterCondition && profile.GenderProbability > profilesParamsDto.MinGenderProbability;
             if (profilesParamsDto.MinCountryProbability != null)
@@ -105,12 +107,12 @@ namespace HNG14_Backend_Task1.Controllers
             }
             else
             {
-                if (profilesSorted == null || profilesSorted.Count() == 0)
-                {
-                    return NotFound(new ErrorDto { Status = "Not found", Message = "Profile not found" });
-                }
-                else
-                {
+                //if (profilesSorted == null || profilesSorted.Count() == 0)
+                //{
+                //    return NotFound(new ErrorDto { Status = "Not found", Message = "Profile not found" });
+                //}
+                //else
+                //{
                     var profilesNumber = profilesSorted.Count();
                     var firstIndex = (profilesParamsDto.Page - 1) * profilesParamsDto.Limit;
                     var lastIndex = firstIndex + profilesParamsDto.Limit - 1;
@@ -137,7 +139,7 @@ namespace HNG14_Backend_Task1.Controllers
                     var responseJson = JsonSerializer.Serialize(responseDto);
                     return Ok(responseJson);
                     //}
-                }
+                //}
 
 
             }
@@ -169,8 +171,8 @@ namespace HNG14_Backend_Task1.Controllers
                     
                     }
                 }
-                if (logicalOperatorValue != "")
-                    terms.Add(new FilterTerm { TermType = "LogicalOperator", TermValue = logicalOperatorValue });
+                //if (logicalOperatorValue != "")
+                //    terms.Add(new FilterTerm { TermType = "LogicalOperator", TermValue = logicalOperatorValue });
                 if (!rightValue.Contains(""))
                 {
                     foreach (var value in rightValue)
@@ -245,6 +247,18 @@ namespace HNG14_Backend_Task1.Controllers
                 string[] words = q.Split(' ');
                 var filterTerms = AnalyzeQuery(words);
                 var criteria = CreateCriteria(filterTerms);
+                var genderCriteriaIndexes = criteria.Select((value, index) => new { value, index })
+                .Where(x => x.value.LeftExpression == "Gender")
+                .Select(x => x.index)
+                .ToList();
+                if (genderCriteriaIndexes.Count > 1)
+                {
+                    foreach (var genderIndex in genderCriteriaIndexes.OrderByDescending(i => i))
+                    {
+                        criteria.RemoveAt(genderIndex);
+                    }
+
+                }
                 string query = "";
                 int index = 0;
                 foreach (var criterion in criteria)

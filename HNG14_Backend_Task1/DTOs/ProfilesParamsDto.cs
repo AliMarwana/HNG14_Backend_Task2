@@ -6,6 +6,8 @@ namespace HNG14_Backend_Task2.DTOs
     {
         [FromQuery(Name = "gender")]
         public string? Gender { get; set; } = null;
+        [FromQuery(Name = "age_group")]
+        public string? AgeGroup { get; set; } = null;
 
         [FromQuery(Name = "country_id")] // Permet de mapper country_id vers cette propriété
         public string? CountryId { get; set; } = null;

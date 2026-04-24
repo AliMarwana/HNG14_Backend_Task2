@@ -71,7 +71,7 @@ namespace HNG14_Backend_Task1.Controllers
             if (profilesParamsDto.SortBy != null)
             {
                 if (profilesParamsDto.SortBy != "age"
-                && profilesParamsDto.SortBy != "create_at" && profilesParamsDto.SortBy != "gender_probability")
+                && profilesParamsDto.SortBy != "created_at" && profilesParamsDto.SortBy != "gender_probability")
                 {
                     return UnprocessableEntity(new ErrorDto
                     {

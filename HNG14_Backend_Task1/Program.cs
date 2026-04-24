@@ -1,6 +1,7 @@
 
 using HNG14_Backend_Task1.Data;
 using HNG14_Backend_Task2.Utils;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -18,7 +19,13 @@ namespace HNG14_Backend_Task1
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
    );
                 ;
-
+            builder.Services.AddHttpLogging(logging =>
+            {
+                // Choisissez les champs à afficher (RequestPath contient l'URL)
+                logging.LoggingFields = HttpLoggingFields.RequestMethod |
+                                       HttpLoggingFields.RequestPath |
+                                       HttpLoggingFields.ResponseStatusCode;
+            });
             builder.Services.AddControllers()
                     .AddJsonOptions(options =>
                     {
@@ -51,7 +58,7 @@ namespace HNG14_Backend_Task1
 
             app.UseAuthorization();
             app.UseCors("AllowAll");   // <-- Apply the CORS policy
-
+            app.UseHttpLogging();
             app.MapControllers();
             using (var scope = app.Services.CreateScope())
             {
